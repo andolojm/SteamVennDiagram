@@ -7,24 +7,24 @@ const port = 3001;
 const server = http.createServer(async (request, response) => {
   const requestURL = new URL(request.url, `http://${request.headers.host}`);
 
-  switch (requestURL.pathname) {
-    case "/":
-      response.statusCode = 200;
-      response.setHeader("Content-Type", "application/json");
-      response.end(JSON.stringify({ hello: "world" }));
+  if (requestURL.pathname == "/getOwnedGames") {
+    const apiData = await steam.getOwnedGames(
+      requestURL.searchParams.get("id")
+    );
 
-    case "/getOwnedGames":
-      // test steamid: 76561198017600882
-      const responseBody = await steam.getOwnedGames(
-        requestURL.searchParams.get("id")
-      );
-
-      response.statusCode = 200;
-      response.setHeader("Content-Type", "application/json");
-      response.end(JSON.stringify(responseBody));
+    sendResponse(response, apiData);
+  } else {
+    sendResponse(response, {});
   }
 });
 
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
+
+const sendResponse = (response, body) => {
+  response.statusCode = 200;
+  response.setHeader("Content-Type", "application/json");
+  response.setHeader("Access-Control-Allow-Origin", "*");
+  response.end(JSON.stringify(body));
+};

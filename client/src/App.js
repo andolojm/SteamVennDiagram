@@ -1,23 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import Service from "./service";
 
+let service;
 function App() {
+  const [apiData, setApiData] = useState([]);
+
+  const getOwnedGames = async () =>
+    setApiData(await service.getOwnedGames("76561198017600882"));
+
+  useEffect(() => {
+    service = new Service("http://localhost:3001");
+    // test steamid: 76561198017600882
+
+    getOwnedGames();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <p>{apiData && apiData.map(entry => <div>{entry.name}</div>)}</p>
       </header>
     </div>
   );
