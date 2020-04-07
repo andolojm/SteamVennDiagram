@@ -16,6 +16,7 @@ const getOwnedGames = async id => {
     throw Error("Cannot read key");
   }
 
+  console.log(`Querying Steam API for SteamID: ${id}`);
   return await querySteamApi(id);
 };
 
@@ -29,8 +30,10 @@ const querySteamApi = async id => {
     const games = response.data.response.games;
 
     return games
-      .map(game => ({ name: game.name, playtime: game.playtime_forever }))
-      .sort((a, b) => b.playtime - a.playtime);
+      ? games
+          .map(game => ({ name: game.name, playtime: game.playtime_forever }))
+          .sort((a, b) => b.playtime - a.playtime)
+      : [];
   } catch (e) {
     console.log(e);
     throw e;
