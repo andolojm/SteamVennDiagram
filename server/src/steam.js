@@ -11,7 +11,7 @@ const readFile = async (err, data) => {
 
 fs.readFile("../.key", "utf8", readFile);
 
-const main = async id => {
+const getOwnedGames = async id => {
   if (!STEAM_API_KEY) {
     throw Error("Cannot read key");
   }
@@ -40,6 +40,4 @@ const querySteamApi = async id => {
 const formatAPIUrl = id =>
   `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${STEAM_API_KEY}&steamid=${id}&format=json&include_appinfo=1&include_played_free_games=1`;
 
-module.exports = {
-  getOwnedGames: main
-};
+module.exports = { getOwnedGames };
