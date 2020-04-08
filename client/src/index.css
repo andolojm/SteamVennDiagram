@@ -21,10 +21,10 @@ body {
 
 @keyframes spin {
   from {
-    transform: rotate(-40deg);
+    transform: rotate(-10deg);
   }
   to {
-    transform: rotate(40deg);
+    transform: rotate(10deg);
   }
 }
 

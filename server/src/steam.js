@@ -1,7 +1,9 @@
 const fs = require("fs");
 const axios = require("axios");
+const Cache = require("./cache");
 
 let STEAM_API_KEY;
+const cache = new Cache();
 
 const readFile = async (err, data) => {
   if (err) throw err;
@@ -16,14 +18,28 @@ const getOwnedGames = async id => {
     throw Error("Cannot read key");
   }
 
-  console.log(`Querying Steam API for SteamID: ${id}`);
-  return await querySteamApi(id);
-};
-
-const querySteamApi = async id => {
   if (!id) {
     throw Error("Querying steam Requires a steam ID");
   }
+
+  const cachedValue = getOwnedGamesFromCache(id);
+  if (cachedValue) return cachedValue;
+
+  const apiValue = await getOwnedGamesFromSteamAPI(id);
+  saveApiValueToCache(id, apiValue);
+  return apiValue;
+};
+
+const saveApiValueToCache = (id, data) => {
+  return cache.put(id, data);
+};
+
+const getOwnedGamesFromCache = id => {
+  return cache.get(id);
+};
+
+const getOwnedGamesFromSteamAPI = async id => {
+  console.log(`Querying Steam API for SteamID: ${id}`);
 
   try {
     const response = await axios.get(formatAPIUrl(id));
