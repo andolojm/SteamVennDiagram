@@ -52,7 +52,7 @@ const getOwnedGamesFromSteamAPI = async id => {
       : [];
   } catch (e) {
     console.log(e);
-    throw e;
+    return [];
   }
 };
 
