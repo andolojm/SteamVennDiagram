@@ -7,9 +7,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color: #282c34;
+  background-color: #1c041f;
   font-size: calc(8px + 2vmin);
-  color: #eee;
+  color: #ccc;
 }
 
 * {
@@ -28,7 +28,7 @@ body {
   }
 }
 
-.content {
+.app {
   display: grid;
   grid-template-columns: 20% 40% 40%;
   grid-template-rows: 50px auto;
